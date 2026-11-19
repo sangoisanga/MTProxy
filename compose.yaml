@@ -1,0 +1,15 @@
+services:
+  mtproxy:
+    image: ghcr.io/sangoisanga/mtproxy:latest
+    build: .
+    platform: linux/amd64
+    restart: always
+    environment:
+      - SECRET=${SECRET:?set a 32-char hex secret, comma-separated for several}
+      - TAG=${TAG:-}
+      - WORKERS=${WORKERS:-2}
+      - DOMAIN=${DOMAIN:-}
+      - PUBLIC_IP=${PUBLIC_IP:-}
+    ports:
+      # Coolify's Traefik owns host port 443.
+      - "${PROXY_PORT:-8443}:443"
